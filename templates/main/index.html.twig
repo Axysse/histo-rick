@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MainController!{% endblock %}
+
+{% block body %}
+    <section>
+        <h1>HistoRick</h1>
+        <p>Choisissez une date</p>
+    </section>
+    <section>
+        <article>
+            <div id="map" class="h-[50vh]"></div>
+        </article>
+        <article>
+            <div>
+                <label for="yearInput">Sélectionnez une année : <span id="currentYearDisplay"></span></label><br>
+                <input type="range" id="yearInput" min="1" max="2025" value="1250">
+            </div>
+            <div>
+                <button id="inputBttn" class="p-2 bg-gray-200 ">Chercher</button>
+            </div>
+        </article>
+    </section>
+    <section>
+        <article id="resultDiv" class="flex flex-col items-center">
+        </article>
+    </section>
+
+
+          <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <div id="infoDiv" class="flex flex-col justify-center items-center">
+            <h2 id="eventTitle"></h2>
+            <img
+              id="eventImg"
+              src=""
+              alt="Village Image"
+              class="modal-image"
+            />
+          <p id="eventText"></p>
+          <ul id="linkList"></ul>
+        </div>
+      </div>
+    </div>
+{% endblock %}
