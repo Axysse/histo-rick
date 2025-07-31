@@ -1,46 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Tempus Mundi
+{% endblock %}
 
 {% block body %}
-    <section>
-        <h1>HistoRick</h1>
-        <p>Choisissez une date</p>
-    </section>
-    <section>
-        <article>
-            <div id="map" class="h-[50vh]"></div>
-        </article>
-        <article>
-            <div>
-                <label for="yearInput">Sélectionnez une année : <span id="currentYearDisplay"></span></label><br>
-                <input type="range" id="yearInput" min="1" max="2025" value="1250">
+	<section class="mt-4">
+		<article class="flex flex-row">
+			<div id="map" class="h-[65vh] w-[65vw] border-6 border-amber-900 relative">
+
+				<div id="myModal" class="modal">
+					<div class="modal-content">
+						<span class="close-button">&times;</span>
+						<div id="infoDiv" class="flex flex-col justify-center items-center">
+							<h2 id="eventTitle" class="text-xl font-semibold"></h2>
+                            <h3 id="eventYear" class="text-xl font-semibold"></h3>
+							<img id="eventImg" src="" alt="Village Image" class="modal-image"/>
+							<p id="eventText" class="mt-2 text-lg"></p>
+							<ul id="linkList"></ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div id="resultDiv" class="mx-2 w-[35vw] max-lg:hidden flex flex-col text-center">
+                <p class="mt-8">Le résultat de votre recherche s'affichera ici.<br> Sélectionnez une date pour découvrir les évenements historiques qui lui sont liée.</p>
+                <div class="mt-16 flex flex-col items-center mx-12">
+                    <p class="text-xl">"Le bon historien… doit être intrépide, non corrompu, libre, ami de la vérité et de la liberté. Celui qui appelle une figue une figue, et un esquif un esquif, ne donnant ni ne refusant à personne, par faveur ou par inimitié, non influencé par la pitié, la honte ou le remords. Un juge juste… un étranger à tous, d'aucun pays, lié uniquement par ses propres lois, ne reconnaissant aucun souverain, ne considérant jamais ce que tel ou tel homme peut dire de lui, mais relatant fidèlement tout ce qui s'est passé."</p>
+                    <p class="font-bold mt-8">Lucian de Samosate</p>
+                    <img src="{{asset('build/images/Lucianus.jpg')}}" class="w-32" alt="lucian" loading="lazy">
+                </div>
             </div>
-            <div>
-                <button id="inputBttn" class="p-2 bg-gray-200 ">Chercher</button>
-            </div>
-        </article>
-    </section>
-    <section>
-        <article id="resultDiv" class="flex flex-col items-center">
-        </article>
-    </section>
+		</article>
+	</section>
+	<section>
+		<article id="resultDivResponsive" class="mx-8">
+		</article>
+	</section>
 
 
-          <div id="myModal" class="modal">
-      <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <div id="infoDiv" class="flex flex-col justify-center items-center">
-            <h2 id="eventTitle"></h2>
-            <img
-              id="eventImg"
-              src=""
-              alt="Village Image"
-              class="modal-image"
-            />
-          <p id="eventText"></p>
-          <ul id="linkList"></ul>
-        </div>
-      </div>
-    </div>
 {% endblock %}

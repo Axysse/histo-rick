@@ -29,8 +29,11 @@ class EventsCrudController extends AbstractCrudController
         return [
             TextField::new('title'),
             IntegerField::new('year'),
+            AssociationField::new('theme'),
+            AssociationField::new('event_type'),
+            AssociationField::new('event_period'),
             TextField::new('short_text'),
-            TextField::new('event_text'),
+            TextEditorField::new('event_text'),
             ImageField::new('event_picture')
             ->setUploadDir('public/upload')
             ->setBasePath('img/')
@@ -39,8 +42,7 @@ class EventsCrudController extends AbstractCrudController
             ->setRequired(false),
             NumberField::new('longitude'),
             NumberField::new('latitude'),
-            AssociationField::new('event_type'),
-            AssociationField::new('event_period'),
+            TextField::new('link'),
         ];
     }
 

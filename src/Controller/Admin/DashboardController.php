@@ -3,6 +3,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\EventPeriod;
 use App\Entity\Events;
+use App\Entity\EventTheme;
 use App\Entity\EventType;
 use App\Entity\User;
 
@@ -62,6 +63,7 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
             yield MenuItem::linkToCrud('User', 'fas fa-list', User::class),
             yield MenuItem::linkToCrud('Event_type', 'fas fa-list', EventType::class),
+            yield MenuItem::linkToCrud('Event_theme', 'fas fa-list', EventTheme::class),
             yield MenuItem::linkToCrud('Event_period', 'fas fa-list', EventPeriod::class),
             yield MenuItem::linkToCrud('Events', 'fas fa-list', Events::class),
         ];
