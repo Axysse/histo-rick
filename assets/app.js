@@ -9,6 +9,8 @@ import './bootstrap.js';
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
 import { map } from './modules/map.js';
+import './modules/nav.js';
+// import './modules/sliders.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     map(); // Ensure your map initialization function is called

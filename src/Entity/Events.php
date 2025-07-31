@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +42,20 @@ class Events
 
     #[ORM\ManyToOne(inversedBy: 'events')]
     private ?EventPeriod $event_period = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $link = null;
+
+    /**
+     * @var Collection<int, EventTheme>
+     */
+    #[ORM\ManyToMany(targetEntity: EventTheme::class, inversedBy: 'events')]
+    private Collection $theme;
+
+    public function __construct()
+    {
+        $this->theme = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,6 +166,42 @@ class Events
     public function setEventPeriod(?EventPeriod $event_period): static
     {
         $this->event_period = $event_period;
+
+        return $this;
+    }
+
+    public function getLink(): ?string
+    {
+        return $this->link;
+    }
+
+    public function setLink(?string $link): static
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EventTheme>
+     */
+    public function getTheme(): Collection
+    {
+        return $this->theme;
+    }
+
+    public function addTheme(EventTheme $theme): static
+    {
+        if (!$this->theme->contains($theme)) {
+            $this->theme->add($theme);
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(EventTheme $theme): static
+    {
+        $this->theme->removeElement($theme);
 
         return $this;
     }
