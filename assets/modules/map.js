@@ -111,6 +111,14 @@ export function map() {
             updateDisplays();
         });
 
+    inputBttn.addEventListener("mouseover", () => {
+        inputBttn.classList.add("cursor-pointer");
+    })
+
+        inputBttn.addEventListener("mouseout", () => {
+        inputBttn.classList.remove("cursor-pointer");
+    })
+
     inputBttn.addEventListener("click", () => {
         let selectedYear = yearInput.value;
         let selectedYear2 = yearInput2.value;
