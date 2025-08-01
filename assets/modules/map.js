@@ -108,7 +108,6 @@ export function map() {
 
 
         yearInput2.addEventListener('input', function() {
-
             updateDisplays();
         });
 
@@ -154,9 +153,6 @@ export function map() {
         }
     });
 }
-
-
-
 /**
  * Affiche les événements dans la liste et sur la carte
  * @param {Array} events -
@@ -246,24 +242,61 @@ function displayEventsAndMarkers(events) {
                 icon: defaultIcon,
             }).addTo(currentMarkers);
 
-            const popupContent = event.title;
+            const initialPopupContent = `<b>${event.title}</b>`;
             marker
-                .bindPopup(popupContent, {
+                .bindPopup(initialPopupContent, {
                     closeOnClick: false,
                     autoClose: false,
                     closeButton: false,
                 })
                 .openPopup();
 
+            const hoverPopupContent = `
+                <div style="text-align: center;" class="flex flex-col items-center">
+                    <b>${event.title}</b><br>
+                    <span>${event.year}</span><br>
+                    <img src="${eventImageUrl}" alt="${event.title}" style="width: 100px; height: auto; margin-top: 5px;">
+                </div>
+            `;
+
+            marker.on('mouseover', function () {
+                this.closePopup();
+                this.bindPopup(hoverPopupContent, {
+                    closeOnClick: false,
+                    autoClose: false,
+                    closeButton: false,
+                }).openPopup();
+            });
+
+            marker.on('mouseout', function () {
+                this.closePopup();
+                this.bindPopup(initialPopupContent, {
+                    closeOnClick: false,
+                    autoClose: false,
+                    closeButton: false,
+                }).openPopup();
+            });
 
             li.addEventListener("mouseover", () => {
+                marker.closePopup();
                 marker.setIcon(largeIcon);
+                marker.bindPopup(hoverPopupContent, {
+                    closeOnClick: false,
+                    autoClose: false,
+                    closeButton: false,
+                }).openPopup();
                 li.classList.remove("bg-white");
                 li.classList.add("bg-gray-200", "cursor-pointer");
             });
 
             li.addEventListener("mouseout", () => {
+                marker.closePopup();
                 marker.setIcon(defaultIcon);
+                marker.bindPopup(initialPopupContent, {
+                    closeOnClick: false,
+                    autoClose: false,
+                    closeButton: false,
+                }).openPopup();
                 li.classList.remove("bg-gray-200", "cursor-pointer");
                 li.classList.add("bg-white");
             });
