@@ -11,8 +11,6 @@ var closeButton = document.getElementsByClassName("close-button")[0];
 var linkList = document.getElementById("linkList");
 let screenWidth = window.innerWidth;
 
-
-
 function openEvent(selectedEvent) {
     const imageBasePath = "/upload/";
     linkList.innerHTML = "";
@@ -90,34 +88,33 @@ export function map() {
         });
     }
 
-        function updateDisplays() {
-            currentYearDisplay.textContent = yearInput.value;
-            currentYearDisplay2.textContent = yearInput2.value;
+    function updateDisplays() {
+        currentYearDisplay.textContent = yearInput.value;
+        currentYearDisplay2.textContent = yearInput2.value;
+    }
+
+    yearInput2.min = yearInput.value;
+    updateDisplays();
+
+    yearInput.addEventListener("input", function () {
+        yearInput2.min = this.value;
+        if (parseInt(yearInput2.value) < parseInt(this.value)) {
+            yearInput2.value = this.value;
         }
-
-         yearInput2.min = yearInput.value;
         updateDisplays();
+    });
 
-        yearInput.addEventListener('input', function() {
-            yearInput2.min = this.value;
-            if (parseInt(yearInput2.value) < parseInt(this.value)) {
-                yearInput2.value = this.value;
-            }
-            updateDisplays();
-        });
-
-
-        yearInput2.addEventListener('input', function() {
-            updateDisplays();
-        });
+    yearInput2.addEventListener("input", function () {
+        updateDisplays();
+    });
 
     inputBttn.addEventListener("mouseover", () => {
         inputBttn.classList.add("cursor-pointer");
-    })
+    });
 
-        inputBttn.addEventListener("mouseout", () => {
+    inputBttn.addEventListener("mouseout", () => {
         inputBttn.classList.remove("cursor-pointer");
-    })
+    });
 
     inputBttn.addEventListener("click", () => {
         let selectedYear = yearInput.value;
@@ -133,11 +130,12 @@ export function map() {
                     "X-Requested-With": "XMLHttpRequest",
                 },
                 body: JSON.stringify({
-        year: selectedYear,
-        year2: selectedYear2,
-        type: selectedType,
-        period: selectedPeriod,
-        theme: selectedTheme, }),
+                    year: selectedYear,
+                    year2: selectedYear2,
+                    type: selectedType,
+                    period: selectedPeriod,
+                    theme: selectedTheme,
+                }),
             })
                 .then((response) => {
                     if (!response.ok) {
@@ -267,7 +265,7 @@ function displayEventsAndMarkers(events) {
                 </div>
             `;
 
-            marker.on('mouseover', function () {
+            marker.on("mouseover", function () {
                 this.closePopup();
                 this.bindPopup(hoverPopupContent, {
                     closeOnClick: false,
@@ -276,7 +274,7 @@ function displayEventsAndMarkers(events) {
                 }).openPopup();
             });
 
-            marker.on('mouseout', function () {
+            marker.on("mouseout", function () {
                 this.closePopup();
                 this.bindPopup(initialPopupContent, {
                     closeOnClick: false,
@@ -288,11 +286,13 @@ function displayEventsAndMarkers(events) {
             li.addEventListener("mouseover", () => {
                 marker.closePopup();
                 marker.setIcon(largeIcon);
-                marker.bindPopup(hoverPopupContent, {
-                    closeOnClick: false,
-                    autoClose: false,
-                    closeButton: false,
-                }).openPopup();
+                marker
+                    .bindPopup(hoverPopupContent, {
+                        closeOnClick: false,
+                        autoClose: false,
+                        closeButton: false,
+                    })
+                    .openPopup();
                 li.classList.remove("bg-white");
                 li.classList.add("bg-gray-200", "cursor-pointer");
             });
@@ -300,11 +300,13 @@ function displayEventsAndMarkers(events) {
             li.addEventListener("mouseout", () => {
                 marker.closePopup();
                 marker.setIcon(defaultIcon);
-                marker.bindPopup(initialPopupContent, {
-                    closeOnClick: false,
-                    autoClose: false,
-                    closeButton: false,
-                }).openPopup();
+                marker
+                    .bindPopup(initialPopupContent, {
+                        closeOnClick: false,
+                        autoClose: false,
+                        closeButton: false,
+                    })
+                    .openPopup();
                 li.classList.remove("bg-gray-200", "cursor-pointer");
                 li.classList.add("bg-white");
             });
@@ -335,12 +337,11 @@ function displayEventsAndMarkers(events) {
         }
     });
 
-    if(screenWidth  > 1024){
+    if (screenWidth > 1024) {
         resultDiv.appendChild(ul);
     } else {
         resultDivResponsive.appendChild(ul);
     }
-
 
     // if (currentMarkers.getLayers().length > 0) {
     //     mapSpace.fitBounds(currentMarkers.getBounds());

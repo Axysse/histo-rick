@@ -4,26 +4,107 @@
 {% endblock %}
 
 {% block body %}
-	<h1 class="text-center h3 mb-3 font-bold text-2xl">Inscription contributeur</h1>
-	<section class="flex flex-col justify-center items-center w-[100%] mx-96">
-
-		{{ form_errors(registrationForm) }}
-
-		{{ form_start(registrationForm) }}
-		<article class="flex flex-col items-center justify-center w-[50%] ">
-			    {{ form_row(registrationForm.email, {'attr' : {'class': 'bg-white border'}}) }}
-
-			{{ form_row(registrationForm.plainPassword, {
-            label: 'Password', 'attr' : {'class': 'bg-white border'}
-        }) }}
-
+<header class="w-[100%]">
+	<section class="mt-2 flex flex-row items-center justify-between mx-24">
+		<article class="flex flex-row items-center gap-8">
+			<a href="{{path('app_main')}}">
+				<img src="{{asset('build/images/logo.png')}}" class="w-20" alt="logo site" loading="lazy">
+			</a>
+			<h1 class="text-4xl" font-bold>Tempus Mundi</h1>
 		</article>
-		<article class="flex flex-col items-center justify-center w-[50%]">
-			{{ form_row(registrationForm.username, {'attr' : {'class': 'bg-white border'}})}}
-		</article>
-		{{ form_row(registrationForm.agreeTerms) }}
-
-		<button type="submit" class="border bg-gray-200  mt-8 rounded-xl p-2">Valider</button>
-		{{ form_end(registrationForm) }}
+        <article class="flex flex-row items-center gap-4">
+            <p>espace contributeur</p>
+            <a href="{{path('admin')}}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 " >Admin</a>
+        </article>
 	</section>
+ </header>
+	<section class="flex flex-col items-center justify-center mt-24 py-12 px-4 sm:px-6 lg:px-8">
+		<div class="max-w-md w-full space-y-8 p-10 bg-white rounded-lg shadow-lg">
+			<div>
+				<h1 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+					Inscription Contributeur
+				</h1>
+			</div>
+
+			{{ form_start(registrationForm, {'attr': {'class': 'mt-8 space-y-6'}}) }}
+			{{ form_errors(registrationForm) }}
+
+			<div class="rounded-md shadow-sm -space-y-px">
+				<div>
+					{{ form_row(registrationForm.username, {
+                            label: 'Nom d\'utilisateur',
+                            attr: {
+                                placeholder: 'Entrez votre nom d\'utilisateur',
+                                class: 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                            }
+                        }) }}
+				</div>
+				<div>
+					{{ form_row(registrationForm.email, {
+                            label: 'Adresse e-mail',
+                            attr: {
+                                placeholder: 'Entrez votre adresse e-mail',
+                                class: 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                            }
+                        }) }}
+				</div>
+				<div>
+					{{ form_row(registrationForm.plainPassword, {
+                            label: 'Mot de passe',
+                            attr: {
+                                placeholder: 'Entrez votre mot de passe',
+                                class: 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                            }
+                        }) }}
+				</div>
+			</div>
+
+			<div class="flex flex-col items-center justify-between">
+				<button id="rgpd" class="bg-gray-400 border-2 border-black">Voir les conditions d'utilisations.</button>
+				<div class="flex items-center">
+					{{ form_row(registrationForm.agreeTerms, {
+                            label: "J'accepte les conditions d'utilisations.",
+                            attr: {
+                                class: 'h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded'
+                            },
+                            label_attr: {
+                                class: 'ml-2 block text-sm text-gray-900'
+                            }
+                        }) }}
+				</div>
+			</div>
+
+			<div>
+				<button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+					Valider l'inscription
+				</button>
+			</div>
+			{{ form_end(registrationForm) }}
+		</div>
+	</section>
+
+	<div id="rgpd_modal" class="modal">
+		<div class="modal-content">
+			<span class="close-button">&times;</span>
+			<p class="mt-2 text-lg">En cochant cette case, vous consentez à ce que votre nom d'utilisateur et votre adresse e-mail soient collectés et stockés dans la base de données du site 'Tempus Mundi'.<br><br>
+
+				Ces données sont utilisées uniquement pour :
+                <ul>
+				<li>* Vous permettre de vous connecter à votre compte.</li>
+				<li>* Vous envoyer des communications importantes relatives à votre compte ou au service (par exemple, réinitialisation de mot de passe, informations sur les mises à jour).</li>
+                </ul>
+                <br>
+				'Tempus Mundi' s'engage à :
+                <ul>
+				<li>* Ne pas partager vos données personnelles avec des tiers sans votre consentement explicite.</li>
+				<li>* Mettre en œuvre les mesures de sécurité appropriées pour protéger vos données contre tout accès non autorisé, altération, divulgation ou destruction.</li>
+				<li>* Conserver vos données aussi longtemps que votre compte est actif, ou tant que nécessaire pour remplir les objectifs mentionnés ci-dessus et respecter nos obligations légales.</li>
+                </ul>
+				Vous disposez à tout moment d'un droit d'accès, de rectification, d'effacement de vos données, ainsi qu'un droit à la limitation du traitement et d'opposition au traitement. Pour exercer ces droits, veuillez nous contacter à  [page de contact].</p>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('register') }}
 {% endblock %}

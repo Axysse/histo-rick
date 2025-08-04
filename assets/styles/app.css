@@ -77,3 +77,7 @@
 p div a{
     color: #1447e6;
 }
+
+.wall{
+    background-image: url("../img/wallpaper.jpg");
+}
