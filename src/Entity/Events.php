@@ -52,6 +52,12 @@ class Events
     #[ORM\ManyToMany(targetEntity: EventTheme::class, inversedBy: 'events')]
     private Collection $theme;
 
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    private ?Zone $zone = null;
+
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    private ?User $author = null;
+
     public function __construct()
     {
         $this->theme = new ArrayCollection();
@@ -204,5 +210,35 @@ class Events
         $this->theme->removeElement($theme);
 
         return $this;
+    }
+
+    public function getZone(): ?Zone
+    {
+        return $this->zone;
+    }
+
+    public function setZone(?Zone $zone): static
+    {
+        $this->zone = $zone;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+     public function getThemeNames(): string
+    {
+        $themes = $this->getTheme()->map(fn($theme) => $theme->getName())->toArray();
+        return implode(', ', $themes);
     }
 }

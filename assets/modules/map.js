@@ -50,6 +50,7 @@ export function map() {
     const typeInput = document.getElementById("typeInput");
     const periodInput = document.getElementById("periodInput");
     const themeInput = document.getElementById("themeInput");
+    const zoneInput = document.getElementById("zoneInput")
 
     if (!mapSpace) {
         mapSpace = L.map("map").setView([48.46, 0.06], 5);
@@ -122,6 +123,7 @@ export function map() {
         let selectedType = typeInput.value;
         let selectedTheme = themeInput.value;
         let selectedPeriod = periodInput.value;
+        let selectedZone = zoneInput.value;
         if (selectedYear && selectedYear2) {
             fetch("/filter-events", {
                 method: "POST",
@@ -135,6 +137,7 @@ export function map() {
                     type: selectedType,
                     period: selectedPeriod,
                     theme: selectedTheme,
+                    zone: selectedZone,
                 }),
             })
                 .then((response) => {

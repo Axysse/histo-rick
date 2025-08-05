@@ -24,32 +24,38 @@ class EventsRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('e');
 
-        // Filtrer par plage d'années
+
         if (isset($criteria['year_range'])) {
             $qb->andWhere('e.year BETWEEN :year1 AND :year2')
                ->setParameter('year1', $criteria['year_range'][0])
                ->setParameter('year2', $criteria['year_range'][1]);
         }
 
-        // Filtrer par type d'événement
+
         if (isset($criteria['type'])) {
             $qb->join('e.event_type', 'et')
                ->andWhere('et.name = :eventTypeName')
                ->setParameter('eventTypeName', $criteria['type']);
         }
 
-        // Filtrer par période d'événement
+
         if (isset($criteria['period'])) {
             $qb->join('e.event_period', 'ep')
                ->andWhere('ep.name = :eventPeriodName')
                ->setParameter('eventPeriodName', $criteria['period']);
         }
 
-        // Filtrer par thème d'événement
+
         if (isset($criteria['theme'])) {
-            $qb->join('e.theme', 'etm') // Utilisez un alias différent pour éviter les conflits si 'et' est déjà utilisé
+            $qb->join('e.theme', 'etm')
                ->andWhere('etm.name = :eventThemeName')
                ->setParameter('eventThemeName', $criteria['theme']);
+        }
+
+        if (isset($criteria['zone'])) {
+            $qb->join('e.zone', 'ez')
+               ->andWhere('ez.name = :eventZoneName')
+               ->setParameter('eventZoneName', $criteria['zone']);
         }
 
         $qb->orderBy('e.year', 'ASC');
