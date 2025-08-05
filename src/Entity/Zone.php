@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\EventThemeRepository;
+use App\Repository\ZoneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: EventThemeRepository::class)]
-class EventTheme
+#[ORM\Entity(repositoryClass: ZoneRepository::class)]
+class Zone
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,7 +21,7 @@ class EventTheme
     /**
      * @var Collection<int, Events>
      */
-    #[ORM\ManyToMany(targetEntity: Events::class, mappedBy: 'theme')]
+    #[ORM\OneToMany(targetEntity: Events::class, mappedBy: 'zone')]
     private Collection $events;
 
     public function __construct()
@@ -58,7 +58,7 @@ class EventTheme
     {
         if (!$this->events->contains($event)) {
             $this->events->add($event);
-            $event->addTheme($this);
+            $event->setZone($this);
         }
 
         return $this;
@@ -67,14 +67,17 @@ class EventTheme
     public function removeEvent(Events $event): static
     {
         if ($this->events->removeElement($event)) {
-            $event->removeTheme($this);
+            // set the owning side to null (unless already changed)
+            if ($event->getZone() === $this) {
+                $event->setZone(null);
+            }
         }
 
         return $this;
     }
 
-    public function __toString(): string
+            public function __toString(): string
     {
-        return $this->getName(); // Ou le nom de la propriété qui contient le nom du thème
+        return $this->name ?? ''; // Return the 'name' property. Use null coalescing for safety.
     }
 }
