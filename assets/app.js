@@ -1,4 +1,8 @@
 import './bootstrap.js';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-draw/dist/leaflet.draw.css';
+import L from 'leaflet';
+import 'leaflet-draw';
 /*
  * Welcome to your app's main JavaScript file!
  *

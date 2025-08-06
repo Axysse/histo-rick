@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\TemporalBoundariesRepository;
+use App\Repository\TemporalBoundaryRepository;
 
 final class MainController extends AbstractController
 {
@@ -35,8 +37,8 @@ final class MainController extends AbstractController
         ]);
     }
 
-     #[Route('/filter-events', name: 'app_filter_events', methods: ['POST'])]
-    public function filterEvents(Request $request, EventsRepository $eventsRepository): JsonResponse
+    #[Route('/filter-events', name: 'app_filter_events', methods: ['POST'])]
+    public function filterEvents(Request $request, EventsRepository $eventsRepository, TemporalBoundaryRepository $boundariesRepository): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new Response('Accès interdit via cette URL.', Response::HTTP_FORBIDDEN);
@@ -87,6 +89,24 @@ final class MainController extends AbstractController
             ];
         }
 
-        return new JsonResponse($eventsData);
+        $routesData = [];
+
+        if (isset($criteria['year_range'])) {
+            $boundaries = $boundariesRepository->findByYear($criteria['year_range'][0]);
+
+            foreach ($boundaries as $boundary) {
+                $routesData[] = [
+                    'id' => $boundary->getId(),
+                    'name' => $boundary->getPoliticalEntity()?->getName() ?? 'Nom inconnu',
+                    'geojson' => $boundary->getGeometry(),
+                    'color' => $boundary->getPoliticalEntity()?->getColor() ?? '#3388ff',
+                ];
+            }
+        }
+
+        return new JsonResponse([
+            'events' => $eventsData,
+            'routes' => $routesData
+        ]);
     }
 }
