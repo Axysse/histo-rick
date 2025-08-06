@@ -6,6 +6,7 @@ use App\Entity\Events;
 use App\Entity\EventTheme;
 use App\Entity\EventType;
 use App\Entity\PoliticalEntity;
+use App\Entity\TemporalBoundary;
 use App\Entity\User;
 use App\Entity\Zone;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
@@ -79,6 +80,7 @@ class DashboardController extends AbstractDashboardController
             ->setPermission('ROLE_ADMIN'),
             yield MenuItem::linkToCrud('Entités politiques', 'fas fa-list', PoliticalEntity::class)
             ->setPermission('ROLE_ADMIN'),
+            yield MenuItem::linkToCrud('Frontières des entités', 'fas fa-list', TemporalBoundary::class),
         ];
     }
 }

@@ -15,29 +15,18 @@ class TemporalBoundaryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, TemporalBoundary::class);
     }
-
-    //    /**
-    //     * @return TemporalBoundary[] Returns an array of TemporalBoundary objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?TemporalBoundary
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        /**
+     * Trouve les entités dont start_date correspond exactement à l'année donnée
+     *
+     * @param int $startYear
+     * @return TemporalBoundary[]
+     */
+    public function findByYear(int $startYear): array
+    {
+        return $this->createQueryBuilder('t')
+            ->where(':start BETWEEN t.start_date AND t.end_date')
+            ->setParameter('start', $startYear)
+            ->getQuery()
+            ->getResult();
+    }
 }

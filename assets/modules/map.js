@@ -10,6 +10,7 @@ let eventYear = document.getElementById("eventYear");
 var closeButton = document.getElementsByClassName("close-button")[0];
 var linkList = document.getElementById("linkList");
 let screenWidth = window.innerWidth;
+let politicalEntitiesLayer = null;
 
 function openEvent(selectedEvent) {
     const imageBasePath = "/upload/";
@@ -50,7 +51,7 @@ export function map() {
     const typeInput = document.getElementById("typeInput");
     const periodInput = document.getElementById("periodInput");
     const themeInput = document.getElementById("themeInput");
-    const zoneInput = document.getElementById("zoneInput")
+    const zoneInput = document.getElementById("zoneInput");
 
     if (!mapSpace) {
         mapSpace = L.map("map").setView([48.46, 0.06], 5);
@@ -146,8 +147,9 @@ export function map() {
                     }
                     return response.json();
                 })
-                .then((events) => {
-                    displayEventsAndMarkers(events);
+                .then((data) => {
+                    displayEventsAndMarkers(data.events);
+                    displayRoutes(data.routes);
                 })
                 .catch((error) => {
                     console.error(
@@ -162,6 +164,36 @@ export function map() {
         }
     });
 }
+
+function displayRoutes(routesData) {
+    if (politicalEntitiesLayer) {
+        politicalEntitiesLayer.clearLayers();
+    } else {
+        politicalEntitiesLayer = L.featureGroup().addTo(mapSpace);
+    }
+    routesData.forEach((route) => {
+        try {
+            const geojsonLayer = L.geoJSON(route.geojson, {
+                style: {
+                    color: route.color || "#3388ff",
+                    weight: 2,
+                    opacity: 0.8,
+                    fillOpacity: 0.3,
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup(`<strong>${route.name}</strong>`);
+                },
+            });
+
+            geojsonLayer.eachLayer(function (layer) {
+                politicalEntitiesLayer.addLayer(layer);
+            });
+        } catch (error) {
+            console.error("Erreur dans le GeoJSON pour", route.name, error);
+        }
+    });
+}
+
 /**
  * Affiche les événements dans la liste et sur la carte
  * @param {Array} events -
