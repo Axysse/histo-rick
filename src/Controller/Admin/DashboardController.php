@@ -80,7 +80,9 @@ class DashboardController extends AbstractDashboardController
             ->setPermission('ROLE_ADMIN'),
             yield MenuItem::linkToCrud('Entités politiques', 'fas fa-list', PoliticalEntity::class)
             ->setPermission('ROLE_ADMIN'),
-            yield MenuItem::linkToCrud('Frontières des entités', 'fas fa-list', TemporalBoundary::class),
+            yield MenuItem::linkToCrud('Frontières des entités', 'fas fa-list', TemporalBoundary::class)
+            ->setPermission('ROLE_ADMIN')
+            ->setPermission('ROLE_MAPPER')
         ];
     }
 }
