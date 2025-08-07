@@ -12,8 +12,15 @@
 			<h1 class="text-4xl" font-bold>Tempus Mundi</h1>
 		</article>
         <article class="flex flex-row items-center gap-4">
-            <p>espace contributeur</p>
+            {% if app.user %}
+            <a href="{{ path('app_logout') }}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 " >Déconnexion</a>
+            {% endif %}
+            {% if app.user is null %}
+            <a href="{{path('app_login')}}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 " >Connexion</a>
+            {% endif %}
+            {% if app.user %}
             <a href="{{path('admin')}}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 " >Admin</a>
+            {% endif %}
         </article>
 	</section>
  </header>

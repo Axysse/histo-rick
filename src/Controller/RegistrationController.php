@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Invitation;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,9 +14,19 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class RegistrationController extends AbstractController
 {
-    #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    #[Route('/register/{token}', name: 'app_register', methods: ['GET', 'POST'])]
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, string $token): Response
     {
+
+        $invitation = $entityManager->getRepository(Invitation::class)->findOneBy([
+            'token' => $token,
+            'used' => false,
+        ]);
+
+        if (!$invitation) {
+            throw $this->createNotFoundException('Lien d\'invitation invalide ou déjà utilisé.');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -24,13 +35,12 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 
-            // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
             $entityManager->persist($user);
+            $invitation->setUsed(true);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('app_main');
         }

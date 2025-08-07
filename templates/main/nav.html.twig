@@ -8,8 +8,15 @@
 		</article>
         <article class="flex flex-row items-center gap-4">
             <p>espace contributeur</p>
+            {% if app.user %}
+            <a href="{{ path('app_logout') }}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 " >Déconnexion</a>
+            {% endif %}
+            {% if app.user is null %}
             <a href="{{path('app_login')}}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 " >Connexion</a>
+            {% endif %}
+            {% if app.user %}
             <a href="{{path('admin')}}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 " >Admin</a>
+            {% endif %}
         </article>
 	</section>
 	<section id="nav" class="flex-row justify-center mb-2 mx-10 bg-[#f5f5f5] shadow-2xl rounded-xl mt-2 w-[90vw]">

@@ -1,0 +1,11 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block main %}
+    <h1>Générer un lien d'invitation</h1>
+    <div class="alert alert-info">
+        <p>Utilisez ce lien pour inviter un nouvel utilisateur :</p>
+        <div class="p-3 bg-light rounded">
+            <a href="{{ invitationLink }}" target="_blank">{{ invitationLink }}</a>
+        </div>
+    </div>
+{% endblock %}
