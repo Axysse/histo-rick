@@ -9,6 +9,7 @@ use App\Entity\PoliticalEntity;
 use App\Entity\TemporalBoundary;
 use App\Entity\User;
 use App\Entity\Zone;
+use App\Entity\Invitation;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -66,6 +67,8 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         return [
+            yield MenuItem::linkToRoute('Générer un lien', 'fa fa-link', 'admin_invitation_link')
+            ->setPermission('ROLE_ADMIN'),
             yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
             yield MenuItem::linkToCrud('User', 'fas fa-list', User::class)
             ->setPermission('ROLE_ADMIN'),
