@@ -70,20 +70,20 @@ class DashboardController extends AbstractDashboardController
             yield MenuItem::linkToRoute('Générer un lien', 'fa fa-link', 'admin_invitation_link')
             ->setPermission('ROLE_ADMIN'),
             yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
-            yield MenuItem::linkToCrud('User', 'fas fa-list', User::class)
+            yield MenuItem::linkToCrud('User', 'fas fa-user', User::class)
             ->setPermission('ROLE_ADMIN'),
             yield MenuItem::linkToCrud('Event_type', 'fas fa-list', EventType::class)
             ->setPermission('ROLE_ADMIN'),
             yield MenuItem::linkToCrud('Event_theme', 'fas fa-list', EventTheme::class)
             ->setPermission('ROLE_ADMIN'),
-            yield MenuItem::linkToCrud('Event_period', 'fas fa-list', EventPeriod::class)
+            yield MenuItem::linkToCrud('Event_period', 'fas fa-calendar', EventPeriod::class)
             ->setPermission('ROLE_ADMIN'),
-            yield MenuItem::linkToCrud('Events', 'fas fa-list', Events::class),
-            yield MenuItem::linkToCrud('Zones', 'fas fa-list', Zone::class)
+            yield MenuItem::linkToCrud('Events', 'fas fa-pencil', Events::class),
+            yield MenuItem::linkToCrud('Zones', 'fas fa-marker', Zone::class)
             ->setPermission('ROLE_ADMIN'),
-            yield MenuItem::linkToCrud('Entités politiques', 'fas fa-list', PoliticalEntity::class)
+            yield MenuItem::linkToCrud('Entités politiques', 'fas fa-globe', PoliticalEntity::class)
             ->setPermission('ROLE_ADMIN'),
-            yield MenuItem::linkToCrud('Frontières des entités', 'fas fa-list', TemporalBoundary::class)
+            yield MenuItem::linkToCrud('Frontières des entités', 'fas fa-clock', TemporalBoundary::class)
             ->setPermission('ROLE_ADMIN')
             ->setPermission('ROLE_MAPPER')
         ];
