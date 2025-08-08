@@ -1,12 +1,48 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block main %}
-<h1 class="text-center">ACCUEIL ADMIN</h1>
-
-<section class="mt-12 mx-24">
-    <article class="flex flex-col items-center text-center">
-        <p>Selon le rôle attribué, vous avez accés à l'édition et la création d'évenements et/ou l'édition et la création de frontières. </p>
-        <p></p>
-    </article>
-</section>
+	<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+	<section class="page-container flex-col">
+		<h1 class="center">ACCUEIL CONTRIBUTEURS</h1>
+		<article class="flex-row mt">
+			<div class="flex-col card center">
+            dernier évenement:
+				<p class="title">
+					{{ lastEvent.title }}</p>
+				<p class="card-date year">{{ lastEvent.year }}</p>
+				<img src="{{asset('upload/' ~ lastEvent.eventpicture)}}" alt="Image de l'événement" class="card-image">
+				<p class="card-description">
+					{{ lastEvent.shorttext }}
+				</p>
+				<p>auteur:
+					<span class="title">{{ lastEvent.author }}</span>
+				</p>
+			</div>
+			<div class="flex-col gap">
+				<div class="card ml">
+					<p class="title">
+						Nombre d'évenements mis en ligne par les contributeurs:
+						<span class="year">
+							{{ totalEvents }}
+						</span>
+					</p>
+				</div>
+				<div class="card ml">
+					<p>
+						Nombre d'évenements mis en ligne par les contributeurs:
+						<span class="text-xl font-bold">
+							{{ totalEvents }}
+						</span>
+					</p>
+				</div>
+			</div>
+		</article>
+	</section>
+	<section class="page-container flex-col mt">
+    <h2>Conseils d'utilisations</h2>
+		<article class="flex-col center mt">
+			<p>Selon le rôle attribué, vous avez accés à l'édition et la création d'évenements et/ou l'édition et la création de frontières.
+			</p>
+		</article>
+	</section>
 {% endblock %}

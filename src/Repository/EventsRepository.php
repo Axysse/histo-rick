@@ -106,4 +106,13 @@ class EventsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+public function findLast(): ?Events
+{
+    return $this->createQueryBuilder('e')
+        ->orderBy('e.id', 'DESC')
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getOneOrNullResult();
+}
 }

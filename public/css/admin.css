@@ -1,0 +1,66 @@
+
+.page-container {
+    margin-top: 20px;
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.ml{
+    margin-left: 5%;
+}
+
+.mt{
+    margin-top: 5%;
+}
+
+.center{
+    text-align: center;
+}
+
+.gap{
+    gap: 15%;
+}
+
+.title{
+    font-size: large;
+    font-weight: bold;
+}
+
+.year{
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; /* Bords arrondis pour un aspect plus doux */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère pour la profondeur */
+    overflow: hidden; /* Empêche le contenu de déborder, surtout l'image */
+    background-color: #ffffff;
+    transition: transform 0.2s ease-in-out; /* Effet de transition au survol */
+    padding: 2%;
+}
+
+.card:hover {
+    transform: translateY(-5px); /* La carte "flotte" légèrement au survol */
+}
+
+.card-image {
+    width: 100%;
+    height: 180px; /* Hauteur fixe pour une uniformité */
+    object-fit: cover; /* Recadre l'image pour qu'elle remplisse l'espace sans la déformer */
+}

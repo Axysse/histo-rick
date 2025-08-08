@@ -49,7 +49,7 @@ class EventsCrudController extends AbstractCrudController
             TextEditorField::new('event_text'),
             ImageField::new('event_picture')
             ->setUploadDir('public/upload')
-            ->setBasePath('img/')
+            ->setBasePath('/upload')
             ->setFormType(FileUploadType::class)
             ->setUploadedFileNamePattern('[randomhash].[extension]')
             ->setRequired(false),
@@ -74,7 +74,7 @@ class EventsCrudController extends AbstractCrudController
             TextEditorField::new('event_text'),
             ImageField::new('event_picture')
             ->setUploadDir('public/upload')
-            ->setBasePath('img/')
+            ->setBasePath('/upload')
             ->setFormType(FileUploadType::class)
             ->setUploadedFileNamePattern('[randomhash].[extension]')
             ->setRequired(false),

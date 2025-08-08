@@ -9,7 +9,7 @@ use App\Entity\PoliticalEntity;
 use App\Entity\TemporalBoundary;
 use App\Entity\User;
 use App\Entity\Zone;
-use App\Entity\Invitation;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -21,11 +21,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
+    private $entityManager;
 
         public function __construct(
-        private AdminUrlGenerator $adminUrlGenerator
+        private AdminUrlGenerator $adminUrlGenerator, EntityManagerInterface $entityManager
     )
     {
+        $this->entityManager = $entityManager;
     }
 
     #[Route('/admin', name: 'admin')]
@@ -35,7 +37,18 @@ class DashboardController extends AbstractDashboardController
         if($getUser == null){
             return $this->redirectToRoute('app_main');
         };
-        return $this->render('admin/index.html.twig');
+
+        $eventRepository = $this->entityManager->getRepository(Events::class);
+        $totalEvents = $eventRepository->count([]);
+
+        $lastEvent = $eventRepository->findLast();
+
+        // var_dump($lastEvent);
+
+        return $this->render('admin/index.html.twig', [
+            'totalEvents' => $totalEvents,
+            'lastEvent' => $lastEvent,
+        ]);
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
