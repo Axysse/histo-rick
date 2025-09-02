@@ -53,6 +53,7 @@ class EventsCrudController extends AbstractCrudController
             ->setFormType(FileUploadType::class)
             ->setUploadedFileNamePattern('[randomhash].[extension]')
             ->setRequired(false),
+            TextField::new('picture_desc'),
             NumberField::new('longitude'),
             NumberField::new('latitude'),
             TextField::new('link'),
@@ -78,6 +79,7 @@ class EventsCrudController extends AbstractCrudController
             ->setFormType(FileUploadType::class)
             ->setUploadedFileNamePattern('[randomhash].[extension]')
             ->setRequired(false),
+            TextField::new('picture_desc'),
             NumberField::new('longitude'),
             NumberField::new('latitude'),
             TextField::new('link'),

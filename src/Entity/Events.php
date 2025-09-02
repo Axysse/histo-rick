@@ -58,6 +58,9 @@ class Events
     #[ORM\ManyToOne(inversedBy: 'events')]
     private ?User $author = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $picture_desc = null;
+
     public function __construct()
     {
         $this->theme = new ArrayCollection();
@@ -241,4 +244,16 @@ class Events
         $themes = $this->getTheme()->map(fn($theme) => $theme->getName())->toArray();
         return implode(', ', $themes);
     }
+
+     public function getPictureDesc(): ?string
+     {
+         return $this->picture_desc;
+     }
+
+     public function setPictureDesc(?string $picture_desc): static
+     {
+         $this->picture_desc = $picture_desc;
+
+         return $this;
+     }
 }

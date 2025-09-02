@@ -83,6 +83,7 @@ final class MainController extends AbstractController
                 'shortText' => $event->getShortText(),
                 'eventText' => $event->getEventText(),
                 'eventPicture' => $event->getEventPicture(),
+                'pictureDesc' => $event->getPictureDesc(),
                 'x' => $event->getLongitude(),
                 'y' => $event->getLatitude(),
                 'link' => $event->getLink(),
