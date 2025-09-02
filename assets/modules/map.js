@@ -5,6 +5,7 @@ let largeIcon;
 var modal = document.getElementById("myModal");
 let eventTitle = document.getElementById("eventTitle");
 let eventImg = document.getElementById("eventImg");
+let imgDesc = document.getElementById("imgDesc");
 let eventText = document.getElementById("eventText");
 let eventYear = document.getElementById("eventYear");
 var closeButton = document.getElementsByClassName("close-button")[0];
@@ -18,6 +19,7 @@ function openEvent(selectedEvent) {
     eventTitle.innerHTML = selectedEvent.title;
     eventYear.innerHTML = selectedEvent.year;
     eventImg.src = imageBasePath + selectedEvent.eventPicture;
+    imgDesc.innerHTML = selectedEvent.pictureDesc;
     eventText.innerHTML = selectedEvent.eventText;
     modal.style.display = "flex";
 
