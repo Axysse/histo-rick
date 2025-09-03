@@ -81,3 +81,58 @@ p div a{
 .wall{
     background-image: url("../img/wallpaper.jpg");
 }
+
+#yearInput,
+#yearInput2 {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #d1d5db; /* gris clair (Tailwind gray-300) */
+  height: 4px;
+  border-radius: 9999px;
+  pointer-events: none; /* on clique que sur les thumbs */
+}
+
+#yearInput::-webkit-slider-thumb,
+#yearInput2::-webkit-slider-thumb {
+  pointer-events: all;
+  position: relative;
+  z-index: 20;
+  transform: scale(1);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  direction: rtl;
+}
+#yearInput::-webkit-slider-thumb:hover,
+#yearInput2::-webkit-slider-thumb:hover {
+  transform: scale(1.4);
+
+}
+
+/* Firefox */
+#yearInput::-moz-range-thumb,
+#yearInput2::-moz-range-thumb {
+  pointer-events: all;
+  position: relative;
+  z-index: 20;
+  transform: scale(1);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+#yearInput::-moz-range-thumb:hover,
+#yearInput2::-moz-range-thumb:hover {
+  transform: scale(1.4);
+}
+
+#yearInput::-webkit-slider-runnable-track,
+#yearInput2::-webkit-slider-runnable-track {
+  background: #d1d5db; /* gris clair */
+  height: 4px;
+  border-radius: 9999px;
+}
+
+/* Firefox */
+#yearInput::-moz-range-track,
+#yearInput2::-moz-range-track {
+  background: #d1d5db; /* gris clair */
+  height: 4px;
+  border-radius: 9999px;
+}
+
