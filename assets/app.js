@@ -15,7 +15,7 @@ import './styles/app.css';
 import { map } from './modules/map.js';
 
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', () => {
     map();
     console.log('map loaded');
 });

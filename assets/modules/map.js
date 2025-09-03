@@ -45,6 +45,16 @@ function openEvent(selectedEvent) {
 }
 
 export function map() {
+
+        if (document.getElementById('map')._leaflet_id) {
+        document.getElementById('map').remove();
+    }
+
+    const mapContainer = document.getElementById("map-container");
+    if (mapContainer) {
+        mapContainer.innerHTML = '<div id="map" style="height: 100%;"></div>';
+    }
+
     const inputBttn = document.getElementById("inputBttn");
     const resultDiv = document.getElementById("resultDiv");
     const resultDivResponsive = document.getElementById("resultDivResponsive");
@@ -55,8 +65,8 @@ export function map() {
     const themeInput = document.getElementById("themeInput");
     const zoneInput = document.getElementById("zoneInput");
 
-    if (!mapSpace) {
-        mapSpace = L.map("map").setView([48.46, 0.06], 5);
+
+       mapSpace = L.map("map").setView([48.46, 0.06], 5);
 
         L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
             maxZoom: 19,
@@ -90,7 +100,7 @@ export function map() {
             popupAnchor: [1, -40],
             shadowSize: [57, 57],
         });
-    }
+
 
     function updateDisplays() {
         currentYearDisplay.textContent = yearInput.value;
