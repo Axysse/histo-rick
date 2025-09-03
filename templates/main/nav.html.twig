@@ -1,23 +1,23 @@
 <header class="">
 	<section class="mt-2 flex flex-row items-center justify-between mx-24">
 		<article class="flex flex-row items-center gap-8">
-			<a href="{{path('app_main')}}">
+			<a href="{{path('app_main')}}" data-turbo="false">
 				<img src="{{asset('build/images/logo.png')}}" class="w-20" alt="logo site" loading="lazy">
 			</a>
 			<h1 class="text-4xl" font-bold>Tempus Mundi</h1>
 		</article>
-        <article class="flex flex-row items-center gap-4">
-            <p>espace contributeur</p>
-            {% if app.user %}
-            <a href="{{ path('app_logout') }}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 " >Déconnexion</a>
-            {% endif %}
-            {% if app.user is null %}
-            <a href="{{path('app_login')}}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 " >Connexion</a>
-            {% endif %}
-            {% if app.user %}
-            <a href="{{path('admin')}}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 " >Admin</a>
-            {% endif %}
-        </article>
+		<article class="flex flex-row items-center gap-4">
+			<p>espace contributeur</p>
+			{% if app.user %}
+				<a href="{{ path('app_logout') }}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 ">Déconnexion</a>
+			{% endif %}
+			{% if app.user is null %}
+				<a href="{{path('app_login')}}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 ">Connexion</a>
+			{% endif %}
+			{% if app.user %}
+				<a href="{{path('admin')}}" class="border border-black-500 bg-[#fae35e] rounded-xl p-2 h-12 ">Admin</a>
+			{% endif %}
+		</article>
 	</section>
 	<section id="nav" class="flex-row justify-center mb-2 mx-10 bg-[#f5f5f5] shadow-2xl rounded-xl mt-2 w-[90vw]">
 		<article class="flex flex-col justify-center items-center">
@@ -51,7 +51,7 @@
 						{% endfor %}
 					</select>
 				</div>
-                <div class=" flex flex-col items-center">
+				<div class=" flex flex-col items-center">
 					<p>recherche par zone :</p>
 					<select name="eventZone" id="zoneInput" class="border-1 border-black bg-white">
 						<option value="" class="bg-white border">tous</option>
@@ -69,12 +69,16 @@
 					<span class="text-2xl font-extrabold">/</span>
 					<span id="currentYearDisplay2" class="text-3xl font-semibold"></span>
 				</label><br>
-				<input type="range" id="yearInput" min="100" max="1600" value="395" class="w-[85vw]">
-				<input type="range" id="yearInput2" min="100" max="1600" value="395" class="w-[85vw]">
-			</div>
-			<div class="flex flex-row items-center justify-center mb-2">
-				<button id="inputBttn" class="p-2 bg-gray-200 border-2 border-black mb-2">Chercher</button>
-			</div>
-		</article>
-	</section>
-</header>
+
+				<div class="relative w-[85vw]">
+					<input type="range" id="yearInput" min="395" max="1600" value="395" class="absolute top-0 left-0 w-full">
+					<input type="range" id="yearInput2" min="395" max="1600" value="395" class="absolute top-0 left-0 w-full">
+					<div id="rangeTrack" class="absolute top-1/2 h-1 bg-blue-500 rounded-full -translate-y-1/2"></div>
+				</div>
+
+				<div class="flex flex-row items-center justify-center mb-2 mt-8">
+					<button id="inputBttn" class="p-2 bg-gray-200 border-2 border-black mb-2">Chercher</button>
+				</div>
+			</article>
+		</section>
+	</header>

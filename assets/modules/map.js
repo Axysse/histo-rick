@@ -45,9 +45,8 @@ function openEvent(selectedEvent) {
 }
 
 export function map() {
-
-        if (document.getElementById('map')._leaflet_id) {
-        document.getElementById('map').remove();
+    if (document.getElementById("map")._leaflet_id) {
+        document.getElementById("map").remove();
     }
 
     const mapContainer = document.getElementById("map-container");
@@ -65,70 +64,76 @@ export function map() {
     const themeInput = document.getElementById("themeInput");
     const zoneInput = document.getElementById("zoneInput");
 
+    mapSpace = L.map("map").setView([48.46, 0.06], 5);
 
-       mapSpace = L.map("map").setView([48.46, 0.06], 5);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(mapSpace);
 
-        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 19,
-            attribution:
-                '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        }).addTo(mapSpace);
+    currentMarkers.addTo(mapSpace);
+    defaultIcon = L.icon({
+        iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+        iconRetinaUrl:
+            "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+        shadowUrl:
+            "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41],
+    });
 
-        currentMarkers.addTo(mapSpace);
-        defaultIcon = L.icon({
-            iconUrl:
-                "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-            iconRetinaUrl:
-                "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
-            shadowUrl:
-                "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41],
-        });
+    largeIcon = L.icon({
+        iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+        iconRetinaUrl:
+            "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+        shadowUrl:
+            "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+        iconSize: [35, 57],
+        iconAnchor: [17, 57],
+        popupAnchor: [1, -40],
+        shadowSize: [57, 57],
+    });
 
-        largeIcon = L.icon({
-            iconUrl:
-                "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-            iconRetinaUrl:
-                "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
-            shadowUrl:
-                "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
-            iconSize: [35, 57],
-            iconAnchor: [17, 57],
-            popupAnchor: [1, -40],
-            shadowSize: [57, 57],
-        });
-
+    const min = parseInt(yearInput.min);
+    const max = parseInt(yearInput.max);
+    const rangeTrack = document.getElementById("rangeTrack");
 
     function updateDisplays() {
         currentYearDisplay.textContent = yearInput.value;
         currentYearDisplay2.textContent = yearInput2.value;
     }
 
-    yearInput2.min = yearInput.value;
-    updateDisplays();
+    function syncRanges() {
+        let minVal = parseInt(yearInput.value);
+        let maxVal = parseInt(yearInput2.value);
 
-    yearInput.addEventListener("input", function () {
-        yearInput2.min = this.value;
-        if (parseInt(yearInput2.value) < parseInt(this.value)) {
-            yearInput2.value = this.value;
+        if (maxVal < minVal) {
+            [minVal, maxVal] = [maxVal, minVal];
+            yearInput.value = minVal;
+            yearInput2.value = maxVal;
         }
+
         updateDisplays();
-    });
+        updateTrack(minVal, maxVal);
+    }
 
-    yearInput2.addEventListener("input", function () {
-        updateDisplays();
-    });
+    function updateTrack(minVal, maxVal) {
+        const percentMin = ((minVal - min) / (max - min)) * 100;
+        const percentMax = ((maxVal - min) / (max - min)) * 100;
 
-    inputBttn.addEventListener("mouseover", () => {
-        inputBttn.classList.add("cursor-pointer");
-    });
+        rangeTrack.style.left = percentMin + "%";
+        rangeTrack.style.width = percentMax - percentMin + "%";
+    }
 
-    inputBttn.addEventListener("mouseout", () => {
-        inputBttn.classList.remove("cursor-pointer");
-    });
+    yearInput.addEventListener("input", syncRanges);
+    yearInput2.addEventListener("input", syncRanges);
+
+    syncRanges();
+
+    updateDisplays();
 
     inputBttn.addEventListener("click", () => {
         let selectedYear = yearInput.value;
@@ -389,8 +394,4 @@ function displayEventsAndMarkers(events) {
     } else {
         resultDivResponsive.appendChild(ul);
     }
-
-    // if (currentMarkers.getLayers().length > 0) {
-    //     mapSpace.fitBounds(currentMarkers.getBounds());
-    // }
 }
