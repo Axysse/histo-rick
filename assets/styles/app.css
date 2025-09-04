@@ -82,6 +82,11 @@ p div a{
     background-image: url("../img/wallpaper.jpg");
 }
 
+#inputBttn:hover {
+    cursor: pointer;
+    background-color: #888;
+}
+
 #yearInput,
 #yearInput2 {
   -webkit-appearance: none;
@@ -139,4 +144,5 @@ p div a{
   height: 4px;
   border-radius: 9999px;
 }
+
 
