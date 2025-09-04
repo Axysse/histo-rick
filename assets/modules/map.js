@@ -392,6 +392,7 @@ function displayEventsAndMarkers(events) {
     if (screenWidth > 1024) {
         resultDiv.appendChild(ul);
     } else {
+        resultDivResponsive.innerHTML = "";
         resultDivResponsive.appendChild(ul);
     }
 }

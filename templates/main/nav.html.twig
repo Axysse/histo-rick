@@ -19,10 +19,11 @@
 			{% endif %}
 		</article>
 	</section>
-	<section id="nav" class="flex-row justify-center mb-2 mx-10 bg-[#f5f5f5] shadow-2xl rounded-xl mt-2 w-[90vw]">
+	<section id="nav" class="flex-row justify-center mb-2 mx-10 bg-[#ffffff] shadow-2xl rounded-xl mt-2 w-[90vw]">
 		<article class="flex flex-col justify-center items-center">
 			<h2 class="text-xl font-bold">Filtres :</h2>
-			<div id="filtres" class="flex flew-row justify-center items-center w-full gap-8">
+			<div id="filtres" class="flex flew-row justify-center items-center w-full gap-16">
+            <div>
 				<div class=" flex flex-col items-center">
 					<p>types d'évenements :</p>
 					<select name="eventType" id="typeInput" class="border-1 border-black bg-white">
@@ -42,6 +43,8 @@
 					</select>
 
 				</div>
+            </div>
+            <div>
 				<div class=" flex flex-col items-center">
 					<p>recherche par thème :</p>
 					<select name="eventTheme" id="themeInput" class="border-1 border-black bg-white">
@@ -60,6 +63,7 @@
 						{% endfor %}
 					</select>
 				</div>
+            </div>
 			</div>
 		</article>
 		<article class="mx-12">
@@ -71,13 +75,13 @@
 				</label><br>
 
 				<div class="relative w-[85vw] mt-2">
-					<input type="range" id="yearInput" min="395" max="1600" value="395" class="absolute top-0 left-0 w-full">
-					<input type="range" id="yearInput2" min="395" max="1600" value="395" class="absolute top-0 left-0 w-full">
+					<input type="range" id="yearInput" min="395" max="1600" value="395" class="absolute top-0 left-0 w-[95%]">
+					<input type="range" id="yearInput2" min="395" max="1600" value="395" class="absolute top-0 left-0 w-[95%]">
 					<div id="rangeTrack" class="absolute top-1/2 h-1 bg-blue-500 rounded-full -translate-y-1/2"></div>
 				</div>
 
 				<div class="flex flex-row items-center justify-center mb-2 mt-8">
-					<button id="inputBttn" class="p-2 bg-gray-200 border-2 border-black mb-2">Chercher</button>
+					<button id="inputBttn" class="p-2 bg-[#fae35e] border-2 border-black mb-2">Chercher</button>
 				</div>
 			</article>
 		</section>
