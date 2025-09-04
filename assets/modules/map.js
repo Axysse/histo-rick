@@ -121,11 +121,17 @@ export function map() {
     }
 
     function updateTrack(minVal, maxVal) {
-        const percentMin = ((minVal - min) / (max - min)) * 100;
-        const percentMax = ((maxVal - min) / (max - min)) * 100;
+    const sliderWidth = yearInput.offsetWidth;
+    const thumbWidth = 30;
+    const range = max - min;
 
-        rangeTrack.style.left = percentMin + "%";
-        rangeTrack.style.width = percentMax - percentMin + "%";
+    const usableWidth = sliderWidth - thumbWidth;
+
+    const minPos = ((minVal - min) / range) * usableWidth + thumbWidth / 2;
+    const maxPos = ((maxVal - min) / range) * usableWidth + thumbWidth / 2;
+
+    rangeTrack.style.left = `${minPos}px`;
+    rangeTrack.style.width = `${maxPos - minPos}px`;
     }
 
     yearInput.addEventListener("input", syncRanges);
