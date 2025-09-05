@@ -138,7 +138,6 @@ export function map() {
     yearInput2.addEventListener("input", syncRanges);
 
     syncRanges();
-
     updateDisplays();
 
     inputBttn.addEventListener("click", () => {
