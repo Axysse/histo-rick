@@ -67,7 +67,6 @@ class EventPeriod
     public function removeEvent(Events $event): static
     {
         if ($this->events->removeElement($event)) {
-            // set the owning side to null (unless already changed)
             if ($event->getEventPeriod() === $this) {
                 $event->setEventPeriod(null);
             }
@@ -78,6 +77,6 @@ class EventPeriod
 
         public function __toString(): string
     {
-        return $this->name ?? ''; // Return the 'name' property. Use null coalescing for safety.
+        return $this->name ?? '';
     }
 }

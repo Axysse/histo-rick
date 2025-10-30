@@ -217,7 +217,7 @@ function displayRoutes(routesData) {
 }
 
 /**
- * Affiche les événements dans la liste et sur la carte
+ * Affiche les événements
  * @param {Array} events -
  */
 function displayEventsAndMarkers(events) {
