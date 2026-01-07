@@ -45,7 +45,8 @@
         "symfony/yaml": "7.3.*",
         "symfonycasts/reset-password-bundle": "^1.23",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "easycorp/easyadmin-bundle": "^4.24.9"
     },
     "config": {
         "allow-plugins": {
@@ -98,7 +99,6 @@
         }
     },
     "require-dev": {
-        "easycorp/easyadmin-bundle": "^4.24.9",
         "phpunit/phpunit": "^12.2",
         "symfony/browser-kit": "7.3.*",
         "symfony/css-selector": "7.3.*",
