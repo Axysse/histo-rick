@@ -3,35 +3,39 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Tempus Mundi{% endblock %}</title>
-        <link rel="icon" type="image/png" href="{{asset('build/images/logo.png')}}" />
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
-     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
-     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+        
+        {# On commente l'icone qui pointe vers build #}
+        {# <link rel="icon" type="image/png" href="{{asset('build/images/logo.png')}}" /> #}
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+        
+        {# On ajoute Tailwind via CDN pour avoir du style sans Webpack #}
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+        
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            {# On a enlevé encore_entry_link_tags #}
         {% endblock %}
 
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
+            {# On a enlevé encore_entry_script_tags #}
         {% endblock %}
     </head>
     <body class="wall">
         {% block header %}
+        {% endblock %}
 
-        {% endblock %}
         <main class="mx-24 flex flex-col items-center justify-center">
-        {% block body %}
-        {{ include('main/index.html.twig') }}
-        {% endblock %}
+            {% block body %}
+                {{ include('main/index.html.twig') }}
+            {% endblock %}
         </main>
+
         {% block footer %}
             {{ include('main/footer.html.twig') }}
         {% endblock %}
-
     </body>
 </html>
