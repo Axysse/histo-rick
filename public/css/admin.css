@@ -1,48 +1,48 @@
 
-.page-container {
+.tm-page-container {
     margin-top: 20px;
 }
 
-.flex-col{
+.tm-flex-col{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.flex-row{
+.tm-flex-row{
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
-.ml{
+.tm-ml{
     margin-left: 5%;
 }
 
-.mt{
+.tm-mt{
     margin-top: 5%;
 }
 
-.center{
+.tm-center{
     text-align: center;
 }
 
-.gap{
+.tm-gap{
     gap: 15%;
 }
 
-.title{
+.tm-title{
     font-size: large;
     font-weight: bold;
 }
 
-.year{
+.tm-year{
     font-size: larger;
     font-weight: bolder;
 }
 
-.card{
+.tm-card{
     display: flex;
     flex-direction: column;
     width: 300px;
@@ -55,11 +55,11 @@
     padding: 2%;
 }
 
-.card:hover {
+.tm-card:hover {
     transform: translateY(-5px); /* La carte "flotte" légèrement au survol */
 }
 
-.card-image {
+.tm-card-image {
     width: 100%;
     height: 180px; /* Hauteur fixe pour une uniformité */
     object-fit: cover; /* Recadre l'image pour qu'elle remplisse l'espace sans la déformer */

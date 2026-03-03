@@ -23,47 +23,47 @@
 		<article class="flex flex-col justify-center items-center">
 			<h2 class="text-xl font-bold">Filtres :</h2>
 			<div id="filtres" class="flex flew-row justify-center items-center w-full gap-16">
-            <div>
-				<div class=" flex flex-col items-center">
-					<p>types d'évenements :</p>
-					<select name="eventType" id="typeInput" class="border-1 border-black bg-white">
-						<option value="" class="bg-white border">tous</option>
-						{% for type in eventsType %}
-							<option value="{{ type.name }}" class="bg-white border">{{ type.name }}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<div class=" flex flex-col items-center">
-					<p>recherche par période :</p>
-					<select name="eventPeriod" id="periodInput" class="border-1 border-black bg-white">
-						<option value="" class="bg-white border">tous</option>
-						{% for period in eventsPeriod %}
-							<option value="{{ period.name }}" class="bg-white border">{{ period.name }}</option>
-						{% endfor %}
-					</select>
+				<div>
+					<div class=" flex flex-col items-center">
+						<p>types d'évenements :</p>
+						<select name="eventType" id="typeInput" class="border-1 border-black bg-white">
+							<option value="" class="bg-white border">tous</option>
+							{% for type in eventsType %}
+								<option value="{{ type.name }}" class="bg-white border">{{ type.name }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class=" flex flex-col items-center">
+						<p>recherche par période :</p>
+						<select name="eventPeriod" id="periodInput" class="border-1 border-black bg-white">
+							<option value="" class="bg-white border">tous</option>
+							{% for period in eventsPeriod %}
+								<option value="{{ period.name }}" class="bg-white border">{{ period.name }}</option>
+							{% endfor %}
+						</select>
 
+					</div>
 				</div>
-            </div>
-            <div>
-				<div class=" flex flex-col items-center">
-					<p>recherche par thème :</p>
-					<select name="eventTheme" id="themeInput" class="border-1 border-black bg-white">
-						<option value="" class="bg-white border">tous</option>
-						{% for theme in eventsTheme %}
-							<option value="{{ theme.name }}" class="bg-white border">{{ theme.name }}</option>
-						{% endfor %}
-					</select>
+				<div>
+					<div class=" flex flex-col items-center">
+						<p>recherche par thème :</p>
+						<select name="eventTheme" id="themeInput" class="border-1 border-black bg-white">
+							<option value="" class="bg-white border">tous</option>
+							{% for theme in eventsTheme %}
+								<option value="{{ theme.name }}" class="bg-white border">{{ theme.name }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class=" flex flex-col items-center">
+						<p>recherche par zone :</p>
+						<select name="eventZone" id="zoneInput" class="border-1 border-black bg-white">
+							<option value="" class="bg-white border">tous</option>
+							{% for zone in eventsZone %}
+								<option value="{{ zone.name }}" class="bg-white border">{{ zone.name }}</option>
+							{% endfor %}
+						</select>
+					</div>
 				</div>
-				<div class=" flex flex-col items-center">
-					<p>recherche par zone :</p>
-					<select name="eventZone" id="zoneInput" class="border-1 border-black bg-white">
-						<option value="" class="bg-white border">tous</option>
-						{% for zone in eventsZone %}
-							<option value="{{ zone.name }}" class="bg-white border">{{ zone.name }}</option>
-						{% endfor %}
-					</select>
-				</div>
-            </div>
 			</div>
 		</article>
 		<article class="mx-12">
@@ -74,11 +74,17 @@
 					<span id="currentYearDisplay2" class="text-3xl font-semibold"></span>
 				</label><br>
 
-				<div class="relative w-[85vw] mt-2">
-					<input type="range" id="yearInput" min="395" max="1600" value="395" class="absolute top-0 left-0 w-[95%]">
-					<input type="range" id="yearInput2" min="395" max="1600" value="395" class="absolute top-0 left-0 w-[95%]">
-					<div id="rangeTrack" class="absolute top-1/2 h-1 bg-blue-500 rounded-full -translate-y-1/2 pr-5"></div>
-				</div>
+	<div class="relative w-[95%] h-10 mt-2">
+    <div class="absolute top-1/2 left-0 w-full h-1 bg-gray-300 -translate-y-1/2 rounded-full"></div>
+
+    <div id="rangeTrack" class="absolute top-1/2 h-1 bg-blue-500 rounded-full -translate-y-1/2 z-0"></div>
+
+    <input type="range" id="yearInput" min="395" max="1600" value="395"
+           class="absolute top-0 left-0 w-full h-full appearance-none bg-transparent pointer-events-none z-10">
+
+    <input type="range" id="yearInput2" min="395" max="1600" value="1600"
+           class="absolute top-0 left-0 w-full h-full appearance-none bg-transparent pointer-events-none z-20">
+</div>
 
 				<div class="flex flex-row items-center justify-center mb-2 mt-8">
 					<button id="inputBttn" class="p-2 bg-[#fae35e] border-2 border-black mb-2 w-[30%] rounded-lg font-extrabold text-2xl">Chercher</button>

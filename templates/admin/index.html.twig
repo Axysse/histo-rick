@@ -1,11 +1,15 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
+{% block head_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+{% endblock %}
+
 {% block main %}
-	<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
-	<section class="page-container flex-col">
-		<h1 class="center">ACCUEIL CONTRIBUTEURS</h1>
-		<article class="flex-row mt">
-			<div class="flex-col card center">
+	<section class="tm-page-container tm-flex-col">
+		<h1 class="tm-center">ACCUEIL CONTRIBUTEURS</h1>
+		<article class="tm-flex-row tm-mt">
+			<div class="flex-col tm-card tm-center">
 				dernier évenement:
 				<p class="title">
 					{{ lastEvent.title }}</p>
