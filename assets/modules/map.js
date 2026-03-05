@@ -7,20 +7,137 @@ let eventTitle = document.getElementById("eventTitle");
 let eventImg = document.getElementById("eventImg");
 let imgDesc = document.getElementById("imgDesc");
 let eventText = document.getElementById("eventText");
+let eventthemes = document.getElementById("eventThemes");
 let eventYear = document.getElementById("eventYear");
 var closeButton = document.getElementsByClassName("close-button")[0];
 var linkList = document.getElementById("linkList");
 let screenWidth = window.innerWidth;
 let politicalEntitiesLayer = null;
+let resultDiv;
+let resultDivResponsive;
+let paginationContainer;
+let yearInput;
+let yearInput2;
+let typeInput;
+let periodInput;
+let themeInput;
+let zoneInput;
+
+let currentPage = 1;
+
+let countriesLayer = null;
+let selectedLayer = null;
+
+function highlightFeature(e) {
+    const layer = e.target;
+
+    layer.setStyle({
+        weight: 2,
+        color: "#666",
+        fillOpacity: 0.2,
+    });
+
+    layer.bringToFront();
+}
+
+function resetHighlight(e) {
+    if (selectedLayer !== e.target) {
+        countriesLayer.resetStyle(e.target);
+    }
+}
+
+function loadCountriesLayer() {
+    fetch("/geojson/world.geojson")
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            countriesLayer = L.geoJSON(data, {
+                interactive: true,
+                style: function () {
+                    return {
+                        color: "#444",
+                        weight: 0,
+                        fillOpacity: 0,
+                    };
+                },
+
+                onEachFeature: function (feature, layer) {
+                    const countryName = feature.properties.name;
+                    const countryCode = feature.properties["ISO3166-1-Alpha-2"];
+
+                    layer.bindTooltip(countryName, {
+                        sticky: true,
+                    });
+
+                    layer.on("mouseover", function (e) {
+                        highlightFeature(e);
+                        mapSpace.getContainer().style.cursor = "pointer";
+                    });
+                    layer.on("mouseout", function (e) {
+                        resetHighlight(e);
+                        mapSpace.getContainer().style.cursor = "";
+                    });
+
+                    layer.on("click", function (e) {
+                        L.DomEvent.stopPropagation(e);
+
+                        if (selectedLayer === layer) {
+                            countriesLayer.resetStyle(layer);
+                            selectedLayer = null;
+                            zoneInput.value = "";
+                            console.log("Désélection du pays");
+                        } else {
+                            if (selectedLayer) {
+                                countriesLayer.resetStyle(selectedLayer);
+                            }
+
+                            selectedLayer = layer;
+
+                            layer.setStyle({
+                                fillOpacity: 0.4,
+                                fillColor: "#ff0000",
+                                color: "#ff0000",
+                                weight: 2,
+                            });
+
+                            mapSpace.fitBounds(layer.getBounds());
+                            selectCountry(
+                                feature.properties.name,
+                                feature.properties["ISO3166-1-Alpha-2"],
+                            );
+                        }
+                    });
+                },
+            }).addTo(mapSpace);
+        });
+}
+
+function selectCountry(name, code) {
+    zoneInput.value = name;
+
+    console.log("Pays sélectionné :", name);
+}
 
 function openEvent(selectedEvent) {
-    const imageBasePath = "/upload/";
+    const imageBasePath = "https://tempusmundi.s3.fr-par.scw.cloud/";
     linkList.innerHTML = "";
+    eventthemes.innerHTML = "";
     eventTitle.innerHTML = selectedEvent.title;
     eventYear.innerHTML = selectedEvent.year;
     eventImg.src = imageBasePath + selectedEvent.eventPicture;
     imgDesc.innerHTML = selectedEvent.pictureDesc;
     eventText.innerHTML = selectedEvent.eventText;
+    console.log(selectedEvent.eventThemes);
+    if (selectedEvent.eventThemes && selectedEvent.eventThemes.length > 0) {
+        selectedEvent.eventThemes.forEach((theme) => {
+            const span = document.createElement("span");
+            span.classList.add("italic", "text-sm", "gap-2");
+            span.textContent = theme;
+            eventthemes.appendChild(span);
+        });
+    } else {
+        eventthemes.textContent = "";
+    }
     modal.style.display = "flex";
 
     console.log(selectedEvent.link);
@@ -55,16 +172,24 @@ export function map() {
     }
 
     const inputBttn = document.getElementById("inputBttn");
-    const resultDiv = document.getElementById("resultDiv");
-    const resultDivResponsive = document.getElementById("resultDivResponsive");
-    const yearInput = document.getElementById("yearInput");
-    const yearInput2 = document.getElementById("yearInput2");
-    const typeInput = document.getElementById("typeInput");
-    const periodInput = document.getElementById("periodInput");
-    const themeInput = document.getElementById("themeInput");
-    const zoneInput = document.getElementById("zoneInput");
+    resultDiv = document.getElementById("resultDiv");
+    resultDivResponsive = document.getElementById("resultDivResponsive");
+    paginationContainer = document.getElementById("paginationContainer");
+    yearInput = document.getElementById("yearInput");
+    yearInput2 = document.getElementById("yearInput2");
+    typeInput = document.getElementById("typeInput");
+    periodInput = document.getElementById("periodInput");
+    themeInput = document.getElementById("themeInput");
+    zoneInput = document.getElementById("zoneInput");
 
     mapSpace = L.map("map").setView([48.46, 0.06], 5);
+    mapSpace.on("click", function () {
+        if (selectedLayer) {
+            countriesLayer.resetStyle(selectedLayer);
+            selectedLayer = null;
+            zoneInput.value = "";
+        }
+    });
 
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
@@ -73,6 +198,8 @@ export function map() {
     }).addTo(mapSpace);
 
     currentMarkers.addTo(mapSpace);
+
+    loadCountriesLayer();
     defaultIcon = L.icon({
         iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
         iconRetinaUrl:
@@ -121,17 +248,17 @@ export function map() {
     }
 
     function updateTrack(minVal, maxVal) {
-    const sliderWidth = yearInput.offsetWidth;
-    const thumbWidth = 30;
-    const range = max - min;
+        const sliderWidth = yearInput.offsetWidth;
+        const thumbWidth = 30;
+        const range = max - min;
 
-    const usableWidth = sliderWidth - thumbWidth;
+        const usableWidth = sliderWidth - thumbWidth;
 
-    const minPos = ((minVal - min) / range) * usableWidth + thumbWidth / 2;
-    const maxPos = ((maxVal - min) / range) * usableWidth + thumbWidth / 2;
+        const minPos = ((minVal - min) / range) * usableWidth + thumbWidth / 2;
+        const maxPos = ((maxVal - min) / range) * usableWidth + thumbWidth / 2;
 
-    rangeTrack.style.left = `${minPos}px`;
-    rangeTrack.style.width = `${maxPos - minPos}px`;
+        rangeTrack.style.left = `${minPos}px`;
+        rangeTrack.style.width = `${maxPos - minPos}px`;
     }
 
     yearInput.addEventListener("input", syncRanges);
@@ -141,49 +268,7 @@ export function map() {
     updateDisplays();
 
     inputBttn.addEventListener("click", () => {
-        let selectedYear = yearInput.value;
-        let selectedYear2 = yearInput2.value;
-        let selectedType = typeInput.value;
-        let selectedTheme = themeInput.value;
-        let selectedPeriod = periodInput.value;
-        let selectedZone = zoneInput.value;
-        if (selectedYear && selectedYear2) {
-            fetch("/filter-events", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
-                },
-                body: JSON.stringify({
-                    year: selectedYear,
-                    year2: selectedYear2,
-                    type: selectedType,
-                    period: selectedPeriod,
-                    theme: selectedTheme,
-                    zone: selectedZone,
-                }),
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Erreur réseau ou réponse du serveur");
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    displayEventsAndMarkers(data.events);
-                    displayRoutes(data.routes);
-                })
-                .catch((error) => {
-                    console.error(
-                        "Erreur lors de la récupération des données:",
-                        error
-                    );
-                    resultDiv.innerHTML =
-                        '<p class="text-danger">Une erreur est survenue lors du chargement des données.</p>';
-                });
-        } else {
-            resultDiv.innerHTML = "<p>Veuillez sélectionner une année.</p>";
-        }
+        fetchEvents(1);
     });
 }
 
@@ -214,6 +299,65 @@ function displayRoutes(routesData) {
             console.error("Erreur dans le GeoJSON pour", route.name, error);
         }
     });
+    if (countriesLayer) {
+        countriesLayer.bringToFront();
+    }
+}
+
+function fetchEvents(page) {
+    currentPage = page;
+    const payload = {
+        year: yearInput.value,
+        year2: yearInput2.value,
+        type: typeInput.value,
+        period: periodInput.value,
+        theme: themeInput.value,
+        zone: zoneInput.value,
+        page: page,
+    };
+
+    if (payload.year && payload.year2) {
+        resultDiv.innerHTML = "<p>Recherche en cours....</p>";
+        fetch("/filter-events", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+            },
+            body: JSON.stringify(payload),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                displayEventsAndMarkers(data.events);
+                displayRoutes(data.routes);
+                updatePaginationUI(data.totalPages, data.currentPage);
+            })
+            .catch((error) => {
+                console.error("Erreur:", error);
+                resultDiv.innerHTML =
+                    '<p class="text-danger">Une erreur est survenue.</p>';
+            });
+    } else {
+        resultDiv.innerHTML = "<p>Veuillez sélectionner une année.</p>";
+    }
+}
+
+function updatePaginationUI(totalPages, currentPage) {
+    if (!paginationContainer) return;
+    paginationContainer.innerHTML = "";
+
+    if (totalPages > 1) {
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.innerText = i;
+            btn.className =
+                i === currentPage
+                    ? "bg-blue-500 text-white p-2"
+                    : "bg-gray-200 p-2";
+            btn.onclick = () => fetchEvents(i);
+            paginationContainer.appendChild(btn);
+        }
+    }
 }
 
 /**
@@ -231,7 +375,7 @@ function displayEventsAndMarkers(events) {
         "gap-4",
         "overflow-y-scroll",
         "max-h-[65vh]",
-        "p-2"
+        "p-2",
     );
     if (events.length === 0) {
         resultDiv.innerHTML =
@@ -240,7 +384,7 @@ function displayEventsAndMarkers(events) {
     }
 
     events.forEach((event) => {
-        const imageBasePath = "/upload/";
+        const imageBasePath = "https://tempusmundi.s3.fr-par.scw.cloud/";
         const eventImageUrl = imageBasePath + event.eventPicture;
         const li = document.createElement("li");
         li.classList.add(
@@ -259,7 +403,7 @@ function displayEventsAndMarkers(events) {
             "flex-grow-0",
             "relative",
             "overflow-hidden",
-            "text-center"
+            "text-center",
         );
         li.style.backgroundImage = `url('${eventImageUrl}')`;
         li.style.backgroundSize = "cover";
@@ -376,11 +520,11 @@ function displayEventsAndMarkers(events) {
                 const offsetPoint = L.point(targetPoint.x - 200, targetPoint.y);
                 const newCenterLatLng = mapSpace.unproject(
                     offsetPoint,
-                    currentZoom
+                    currentZoom,
                 );
                 mapSpace.flyTo(newCenterLatLng, currentZoom, {
                     duration: 0.75,
-                    easeLinearity: 0.5, //
+                    easeLinearity: 0.5,
                 });
             });
             marker.addEventListener("click", () => {
@@ -389,7 +533,7 @@ function displayEventsAndMarkers(events) {
         } else {
             console.warn(
                 `Coordonnées invalides pour l'événement: ${event.title}`,
-                event
+                event,
             );
         }
     });

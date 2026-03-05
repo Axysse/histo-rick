@@ -23,7 +23,7 @@
 		<article class="flex flex-col justify-center items-center">
 			<h2 class="text-xl font-bold">Filtres :</h2>
 			<div id="filtres" class="flex flew-row justify-center items-center w-full gap-16">
-				<div>
+
 					<div class=" flex flex-col items-center">
 						<p>types d'évenements :</p>
 						<select name="eventType" id="typeInput" class="border-1 border-black bg-white">
@@ -43,8 +43,7 @@
 						</select>
 
 					</div>
-				</div>
-				<div>
+
 					<div class=" flex flex-col items-center">
 						<p>recherche par thème :</p>
 						<select name="eventTheme" id="themeInput" class="border-1 border-black bg-white">
@@ -54,16 +53,16 @@
 							{% endfor %}
 						</select>
 					</div>
-					<div class=" flex flex-col items-center">
+					<div class=" items-center hidden">
 						<p>recherche par zone :</p>
 						<select name="eventZone" id="zoneInput" class="border-1 border-black bg-white">
 							<option value="" class="bg-white border">tous</option>
 							{% for zone in eventsZone %}
-								<option value="{{ zone.name }}" class="bg-white border">{{ zone.name }}</option>
+								<option value="{{ zone.name }}" class="bg-white border ">{{ zone.name }}</option>
 							{% endfor %}
 						</select>
 					</div>
-				</div>
+
 			</div>
 		</article>
 		<article class="mx-12">

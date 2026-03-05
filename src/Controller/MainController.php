@@ -44,6 +44,8 @@ final class MainController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
+        $page = (int) ($data['page'] ?? 1);
+        $limit = 15;
 
 
         $selectedYear = $data['year'] ?? null;
@@ -71,7 +73,9 @@ final class MainController extends AbstractController
             $criteria['zone'] = (string)$selectedZone;
         }
 
-        $events = $eventsRepository->findFilteredEvents($criteria);
+        $events = $eventsRepository->findFilteredEvents($criteria, $page, $limit);
+        $totalEvents = $eventsRepository->countFilteredEvents($criteria);
+        $totalPages = ceil($totalEvents / $limit);
 
         $eventsData = [];
         foreach ($events as $event) {
@@ -86,6 +90,9 @@ final class MainController extends AbstractController
                 'x' => $event->getLongitude(),
                 'y' => $event->getLatitude(),
                 'link' => $event->getLink(),
+                'eventThemes' => $event->getTheme()->map(function(EventTheme $theme) {
+        return $theme->getName();
+    })->toArray(),
             ];
         }
 
@@ -106,7 +113,9 @@ final class MainController extends AbstractController
 
         return new JsonResponse([
             'events' => $eventsData,
-            'routes' => $routesData
+            'routes' => $routesData,
+        'totalPages' => $totalPages,
+        'currentPage' => $page
         ]);
     }
 }

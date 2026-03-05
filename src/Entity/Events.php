@@ -7,8 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
 #[ORM\Entity(repositoryClass: EventsRepository::class)]
+#[Vich\Uploadable]
 class Events
 {
     #[ORM\Id]
@@ -30,6 +33,12 @@ class Events
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $event_picture = null;
+
+    #[Vich\UploadableField(mapping: 'uploads', fileNameProperty: 'event_picture')]
+    private ?File $event_picture_file = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?float $longitude = null;
@@ -130,6 +139,21 @@ class Events
 
         return $this;
     }
+
+    public function setEventPictureFile(?File $image = null): void
+    {
+        $this->event_picture_file = $image;
+
+        if (null !== $image) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getEventPictureFile(): ?File
+    {
+        return $this->event_picture_file;
+    }
+
 
     public function getLongitude(): ?float
     {

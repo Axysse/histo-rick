@@ -18,10 +18,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\FileUploadType;
 use Symfony\Bundle\SecurityBundle\Security;
+use Vich\UploaderBundle\Form\Type\VichImageType;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 
 class EventsCrudController extends AbstractCrudController
 {
-        private $security;
+    private $security;
 
     public function __construct(Security $security)
     {
@@ -33,32 +37,41 @@ class EventsCrudController extends AbstractCrudController
         return Events::class;
     }
 
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+            ->addCssFile('https://unpkg.com/leaflet/dist/leaflet.css')
+            ->addJsFile('https://unpkg.com/leaflet/dist/leaflet.js')
+            ->addJsFile('build/admin-leaflet.js');
+    }
+
 
     public function configureFields(string $pageName): iterable
     {
         if (Crud::PAGE_INDEX === $pageName) {
             return [
-            TextField::new('title'),
-            IntegerField::new('year'),
-            AssociationField::new('zone'),
+                TextField::new('title'),
+                IntegerField::new('year'),
+                AssociationField::new('zone'),
                 TextField::new('themeNames')
                     ->setLabel('Thèmes'),
-                       AssociationField::new('event_type'),
-            AssociationField::new('event_period'),
-            TextField::new('short_text'),
-            TextEditorField::new('event_text'),
-            ImageField::new('event_picture')
-            ->setUploadDir('public/upload')
-            ->setBasePath('/upload')
-            ->setFormType(FileUploadType::class)
-            ->setUploadedFileNamePattern('[randomhash].[extension]')
-            ->setRequired(false),
-            TextField::new('picture_desc'),
-            NumberField::new('longitude'),
-            NumberField::new('latitude'),
-            TextField::new('link'),
-            AssociationField::new('author')
-            ->hideOnForm(),
+                AssociationField::new('event_type'),
+                AssociationField::new('event_period'),
+                TextField::new('short_text'),
+                TextEditorField::new('event_text'),
+                TextField::new('event_picture_file', 'Photo de l\'événement')
+                    ->setFormType(VichImageType::class)
+                    ->onlyOnForms(),
+                ImageField::new('event_picture', 'Aperçu')
+                    ->setBasePath('%env(S3_BASE_URL)%')
+                    ->hideOnForm()
+                    ->setRequired(false),
+                TextField::new('picture_desc'),
+                NumberField::new('latitude'),
+                NumberField::new('longitude'),
+                TextField::new('link'),
+                AssociationField::new('author')
+                    ->hideOnForm(),
             ];
         }
         return [
@@ -66,29 +79,39 @@ class EventsCrudController extends AbstractCrudController
             IntegerField::new('year'),
             AssociationField::new('zone'),
             AssociationField::new('theme')
-            ->setFormTypeOptions([
+                ->setFormTypeOptions([
                     'by_reference' => false,
                 ]),
             AssociationField::new('event_type'),
             AssociationField::new('event_period'),
             TextField::new('short_text'),
             TextEditorField::new('event_text'),
-            ImageField::new('event_picture')
-            ->setUploadDir('public/upload')
-            ->setBasePath('/upload')
-            ->setFormType(FileUploadType::class)
-            ->setUploadedFileNamePattern('[randomhash].[extension]')
-            ->setRequired(false),
+
+            TextField::new('event_picture_file', 'Photo de l\'événement')
+                ->setFormType(VichImageType::class)
+                ->onlyOnForms(),
+            ImageField::new('event_picture', 'Aperçu')
+                ->setBasePath('%env(S3_BASE_URL)%') // L'URL de ton bucket Scaleway
+                ->hideOnForm()
+                ->setRequired(false),
             TextField::new('picture_desc'),
-            NumberField::new('longitude'),
             NumberField::new('latitude'),
+            NumberField::new('longitude'),
+TextField::new('map')
+    ->setLabel('Carte')
+    ->onlyOnForms()
+    ->setFormTypeOptions([
+        'mapped' => false,
+    ])
+    ->setHelp('<div id="leaflet-map" style="height:400px;"></div>')
+    ->renderAsHtml(),
             TextField::new('link'),
             AssociationField::new('author')
-            ->hideOnForm(),
+                ->hideOnForm(),
         ];
     }
 
-     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         /** @var Events $event */
         $event = $entityInstance;

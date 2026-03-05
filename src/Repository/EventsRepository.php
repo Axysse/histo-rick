@@ -20,10 +20,9 @@ class EventsRepository extends ServiceEntityRepository
 //     * @return Events[] Returns an array of Events objects
 //     */
 
-    public function findFilteredEvents(array $criteria): array
+    public function findFilteredEvents(array $criteria, int $page = 1, int $limit = 15): array
     {
         $qb = $this->createQueryBuilder('e');
-
 
         if (isset($criteria['year_range'])) {
             $qb->andWhere('e.year BETWEEN :year1 AND :year2')
@@ -60,8 +59,50 @@ class EventsRepository extends ServiceEntityRepository
 
         $qb->orderBy('e.year', 'ASC');
 
+        $qb->setFirstResult(($page - 1) * $limit)
+       ->setMaxResults($limit);
+
         return $qb->getQuery()->getResult();
     }
+
+    public function countFilteredEvents(array $criteria): int
+{
+    $qb = $this->createQueryBuilder('e')
+               ->select('count(e.id)');
+
+    if (isset($criteria['year_range'])) {
+        $qb->andWhere('e.year BETWEEN :year1 AND :year2')
+           ->setParameter('year1', $criteria['year_range'][0])
+           ->setParameter('year2', $criteria['year_range'][1]);
+    }
+
+    if (isset($criteria['type'])) {
+        $qb->join('e.event_type', 'et')
+           ->andWhere('et.name = :eventTypeName')
+           ->setParameter('eventTypeName', $criteria['type']);
+    }
+
+     if (isset($criteria['period'])) {
+            $qb->join('e.event_period', 'ep')
+               ->andWhere('ep.name = :eventPeriodName')
+               ->setParameter('eventPeriodName', $criteria['period']);
+        }
+
+
+        if (isset($criteria['theme'])) {
+            $qb->join('e.theme', 'etm')
+               ->andWhere('etm.name = :eventThemeName')
+               ->setParameter('eventThemeName', $criteria['theme']);
+        }
+
+        if (isset($criteria['zone'])) {
+            $qb->join('e.zone', 'ez')
+               ->andWhere('ez.name = :eventZoneName')
+               ->setParameter('eventZoneName', $criteria['zone']);
+        }
+
+    return (int) $qb->getQuery()->getSingleScalarResult();
+}
 
     public function findByYear(int $year, int $year2): array
     {

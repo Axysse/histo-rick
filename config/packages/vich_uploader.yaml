@@ -1,0 +1,23 @@
+# config/packages/vich_uploader.yaml
+vich_uploader:
+    db_driver: orm
+
+    # On indique à Vich d'utiliser Flysystem au lieu du système de fichiers local
+    storage: flysystem
+
+    mappings:
+        uploads: # C'est le nom de votre "mapping"
+            # L'URL publique de vos images (définie dans votre .env)
+            uri_prefix: '%env(S3_BASE_URL)%'
+
+            # Le nom du stockage défini dans config/packages/flysystem.yaml
+            upload_destination: default.storage
+
+            # Pour renommer automatiquement les fichiers avec un ID unique (évite les doublons)
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+
+            # Optionnel : supprime le fichier sur Scaleway quand l'entité est supprimée en BDD
+            delete_on_remove: true
+
+            # Optionnel : supprime l'ancien fichier sur Scaleway quand on le remplace par un nouveau
+            delete_on_update: true
